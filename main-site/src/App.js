@@ -52,7 +52,7 @@ const Header = () => {
   async function bid() {
     console.log(bidAmount);
     console.log(provider);
-    const conadd = "0xa9e662520e07A4Ef4295959b91cEf0a1d864988C";
+    const conadd = "0xde373c989267354a0331422884614237ea4b5e12";
     const contractArtifacts = require("./artifacts/contracts/realesate.sol/BidContract.json");
     const contractABI = contractArtifacts.abi;
     console.log(contractABI);
@@ -67,7 +67,6 @@ const Header = () => {
     console.log(contract);
     const tx = await contract.bid(values);
     await tx.wait();
-    console.log(tx.status);
   }
 
   return (
