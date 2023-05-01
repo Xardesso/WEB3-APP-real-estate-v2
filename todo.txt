@@ -1,0 +1,24 @@
+catch error when function fail 
+chat gpt advise me to do this code:
+To get an error in the JavaScript console when a transaction fails in Solidity, you can use the try-catch block in your JavaScript code.
+
+Here's an example code snippet:
+
+
+try {
+  const tx = await contract.methodName(param1, param2).send({ from: account });
+  console.log("Transaction successful:", tx);
+} catch (error) {
+  console.error("Transaction failed:", error);
+}
+In the try block, you call the contract method that you want to execute and wait for the transaction to be sent to the blockchain network. If the transaction is successful, you log a message to the console with the transaction details.
+
+If the transaction fails, an error is thrown and caught by the catch block. In the catch block, you log an error message to the console with the error details.
+
+Note that you should replace contract.methodName(param1, param2) with the actual method name and parameters of your contract method, and account with the Ethereum account that you want to send the transaction from. Also, make sure that you are using a web3 provider that supports Promises, as the await keyword requires Promises to be used.
+
+
+
+
+
+

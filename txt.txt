@@ -1,0 +1,14 @@
+  deploy.js notepad
+  await final.bid({ value: lockedAmount });
+  console.log("success ");
+  const out = await final.highestBidCheck();
+  console.log(parseInt(out));
+  bid.js notepad
+  const out = await final.hisghestbidcheck();
+  console.log(out);
+({ value: lockedAmount }, { gasLimit: 1000000 })
+css
+.property.active img {
+        transform: scale(1.2);
+      }
+ 
