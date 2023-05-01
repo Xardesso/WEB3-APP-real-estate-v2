@@ -34,7 +34,6 @@ const Header = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [bidAmount, setBidAmount] = useState("");
   const [showPopup, setShowPopup] = useState(false);
-  const [add, setadd] = useState("");
   const [provider, setprovider] = useState("");
 
   const handlePropertyClick = (property) => {
@@ -44,15 +43,15 @@ const Header = () => {
   async function connect() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const add = await provider.send("eth_requestAccounts", []);
+    console.log(add);
     setWalletAddress(add[0]);
-    setadd(add[0]);
     setprovider(provider);
     window.alert("wallet connected");
   }
   async function bid() {
     console.log(bidAmount);
     console.log(provider);
-    const conadd = "0xde373c989267354a0331422884614237ea4b5e12";
+    const conadd = "0x6e5F7a75F89048B92d94aDb7aC250553eea50e2d";
     const contractArtifacts = require("./artifacts/contracts/realesate.sol/BidContract.json");
     const contractABI = contractArtifacts.abi;
     console.log(contractABI);
@@ -62,11 +61,15 @@ const Header = () => {
       value: bidAmount,
     };
     console.log(values);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(conadd, contractABI, signer);
+    const contract = new ethers.Contract(
+      conadd,
+      contractABI,
+      provider.getSigner()
+    );
+    const transaction = await contract.bid(values);
+
     console.log(contract);
-    const tx = await contract.bid(values);
-    await tx.wait();
+    await transaction.wait();
   }
 
   return (
