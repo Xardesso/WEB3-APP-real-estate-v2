@@ -37,11 +37,6 @@ const Header = () => {
   const [add, setadd] = useState("");
   const [provider, setprovider] = useState("");
 
-  const handleBid = () => {
-    // Handle bid logic here
-    console.log(`Bidding ${bidAmount} on ${selectedProperty.name}`);
-    setShowPopup(false);
-  };
   const handlePropertyClick = (property) => {
     setSelectedProperty(property);
     setShowPopup(true);
