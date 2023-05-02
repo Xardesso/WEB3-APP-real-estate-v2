@@ -2,9 +2,9 @@ import { useState } from "react";
 const { ethers } = require("ethers");
 
 const Header = () => {
-  const [walletAddress, setWalletAddress] = useState("connect wallet");
+  const [walletAddress, setWalletAddress] = useState("Connect wallet");
 
-  const [PR, PRU] = useState(1);
+  const [PR, PRU] = useState("Check Price");
 
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [bidAmount, setBidAmount] = useState("");
@@ -22,12 +22,12 @@ const Header = () => {
     console.log(add);
     setWalletAddress(add[0]);
     setprovider(provider);
-    window.alert("wallet connected");
+    window.alert("Wallet connected");
   }
   async function bid() {
     if (provider !== "") {
       if (bidAmount === "") {
-        window.alert("Enter amount");
+        window.alert("Enter bid amount");
       } else {
         console.log(bidAmount);
         console.log(provider);
