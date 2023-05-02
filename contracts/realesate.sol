@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.1;
+import "./nftestate.sol";
 
-contract BidContract {
+contract BidContract is REALESTATE {
     struct Bid {
         address bidder;
         uint amount;
     }
-    address public owner;
+    address public ownerr;
     uint public highestBid;
     address public highestBidder;
     event newbid(uint256 indexed highestBid, address indexed highestBidder);
@@ -14,7 +15,7 @@ contract BidContract {
     mapping(address => Bid) public bids;
 
     constructor() {
-        owner = msg.sender;
+        ownerr = msg.sender;
     }
 
     function hisghestbidcheck() public view returns (uint256) {
@@ -35,11 +36,12 @@ contract BidContract {
     }
 
     function endAuction() public {
-        require(msg.sender == owner, "Only owner can end auction");
+        require(msg.sender == ownerr, "Only owner can end auction");
         require(highestBidder != address(0), "No bids received");
 
-        payable(owner).transfer(highestBid);
+        payable(ownerr).transfer(highestBid);
         highestBid = 0;
+        safeMint(highestBidder);
         highestBidder = address(0);
     }
 }

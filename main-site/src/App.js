@@ -10,7 +10,7 @@ const Header = () => {
   const [bidAmount, setBidAmount] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [provider, setprovider] = useState("");
-  const [conadd] = useState("0x814A978fB9e3A0bE0732DF5105eD35C463aff503");
+  const [conadd] = useState("0x86701365Ee2b0ce9B48CF9D0E8b85364Bf914eAE");
 
   const handlePropertyClick = (property) => {
     setSelectedProperty(property);
