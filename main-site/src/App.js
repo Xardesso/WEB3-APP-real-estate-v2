@@ -26,7 +26,7 @@ const Header = () => {
     setprovider(provider);
     window.alert("wallet connected");
   }
-  async function bid() {
+  async function bid1() {
     console.log(bidAmount);
     console.log(provider);
     const contractArtifacts = require("./artifacts/contracts/realesate.sol/BidContract.json");
@@ -54,6 +54,65 @@ const Header = () => {
       window.alert("Transaction failed!");
     }
   }
+
+  async function bid2() {
+    console.log(bidAmount);
+    console.log(provider);
+    const contractArtifacts = require("./artifacts/contracts/realesate.sol/BidContract.json");
+    const contractABI = contractArtifacts.abi;
+    console.log(contractABI);
+    const out = ethers.utils.parseUnits(bidAmount, "ether");
+
+    console.log(out);
+    const values = {
+      gasLimit: 1000000,
+      value: out,
+    };
+    console.log(values);
+    const signer = provider.getSigner();
+
+    const contract = new ethers.Contract(conadd, contractABI, signer);
+
+    const tx = await contract.bid(values);
+
+    const receipt = await tx.wait();
+    console.log(receipt.status);
+    if (receipt.status === 1) {
+      window.alert("Transaction successful!");
+    } else {
+      window.alert("Transaction failed!");
+    }
+  }
+
+  async function bid3() {
+    console.log(bidAmount);
+    console.log(provider);
+    const contractArtifacts = require("./artifacts/contracts/realesate.sol/BidContract.json");
+    const contractABI = contractArtifacts.abi;
+    console.log(contractABI);
+    const out = ethers.utils.parseUnits(bidAmount, "ether");
+
+    console.log(out);
+    const values = {
+      gasLimit: 1000000,
+      value: out,
+    };
+    console.log(values);
+    const signer = provider.getSigner();
+
+    const contract = new ethers.Contract(conadd, contractABI, signer);
+
+    const tx = await contract.bid(values);
+
+    const receipt = await tx.wait();
+    console.log(receipt.status);
+    if (receipt.status === 1) {
+      window.alert("Transaction successful!");
+    } else {
+      window.alert("Transaction failed!");
+    }
+  }
+
   async function price() {
     if (provider !== "") {
       console.log(provider);
