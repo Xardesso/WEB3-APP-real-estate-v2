@@ -51,14 +51,16 @@ const Header = () => {
   async function bid() {
     console.log(bidAmount);
     console.log(provider);
-    const conadd = "0x3903F27738072fcd9954005C2817f15075B4f3e0";
+    const conadd = "0xeb5B0fbbeE16244aFb362451B48C9D934cFfA09E";
     const contractArtifacts = require("./artifacts/contracts/realesate.sol/BidContract.json");
     const contractABI = contractArtifacts.abi;
     console.log(contractABI);
+    const out = ethers.utils.parseUnits(bidAmount, "ether");
 
+    console.log(out);
     const values = {
       gasLimit: 1000000,
-      value: bidAmount,
+      value: out,
     };
     console.log(values);
     const signer = provider.getSigner();
@@ -67,8 +69,13 @@ const Header = () => {
 
     const tx = await contract.bid(values);
 
-    await tx.wait();
-    console.log(contract);
+    const receipt = await tx.wait();
+    console.log(receipt.status);
+    if (receipt.status === 1) {
+      window.alert("Transaction successful!");
+    } else {
+      window.alert("Transaction failed!");
+    }
   }
 
   return (
