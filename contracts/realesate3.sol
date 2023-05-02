@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract BidContract {
+contract BidContract3 {
     struct Bid {
         address bidder;
         uint amount;

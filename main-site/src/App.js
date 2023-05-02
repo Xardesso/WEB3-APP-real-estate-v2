@@ -1,40 +1,18 @@
 import { useState } from "react";
 const { ethers } = require("ethers");
 
-const properties = [
-  {
-    name: "Property 1",
-    price: 50000,
-    Lot: "333 sqft",
-    image: "https://via.placeholder.com/300x200",
-    details:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac enim ut lorem hendrerit vehicula. Vestibulum venenatis tellus vitae felis luctus, ut pulvinar massa tincidunt.",
-  },
-  {
-    name: "Property 2",
-    price: 75000,
-    Lot: "8883 sqft",
-    image: "https://via.placeholder.com/300x200",
-    details:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac enim ut lorem hendrerit vehicula. Vestibulum venenatis tellus vitae felis luctus, ut pulvinar massa tincidunt.",
-  },
-  {
-    name: "Property 3",
-    price: 100000,
-    Lot: "2000 sqft",
-    image: "https://via.placeholder.com/300x200",
-    details:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac enim ut lorem hendrerit vehicula. Vestibulum venenatis tellus vitae felis luctus, ut pulvinar massa tincidunt.",
-  },
-];
-
 const Header = () => {
   const [walletAddress, setWalletAddress] = useState("connect wallet");
+
+  const [P1P, P1PU] = useState(1);
+  const [P2P, P2PU] = useState(1);
+  const [P3P, P3PU] = useState(1);
 
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [bidAmount, setBidAmount] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [provider, setprovider] = useState("");
+  const [conadd] = useState("0xeb5B0fbbeE16244aFb362451B48C9D934cFfA09E");
 
   const handlePropertyClick = (property) => {
     setSelectedProperty(property);
@@ -51,7 +29,6 @@ const Header = () => {
   async function bid() {
     console.log(bidAmount);
     console.log(provider);
-    const conadd = "0xeb5B0fbbeE16244aFb362451B48C9D934cFfA09E";
     const contractArtifacts = require("./artifacts/contracts/realesate.sol/BidContract.json");
     const contractABI = contractArtifacts.abi;
     console.log(contractABI);
@@ -77,6 +54,48 @@ const Header = () => {
       window.alert("Transaction failed!");
     }
   }
+  async function price() {
+    if (provider !== "") {
+      console.log(provider);
+
+      const contractArtifacts = require("./artifacts/contracts/realesate.sol/BidContract.json");
+      const contractABI = contractArtifacts.abi;
+      const signer = provider.getSigner();
+      const contract2 = new ethers.Contract(conadd, contractABI, signer);
+      const tx = await contract2.hisghestbidcheck();
+      console.log(ethers.utils.formatEther(tx));
+
+      P1PU(ethers.utils.formatEther(tx));
+    } else {
+      window.alert("Connect wallet");
+    }
+  }
+  const properties = [
+    {
+      name: "Property 1",
+      price: P1P,
+      Lot: "333 sqft",
+      image: "https://via.placeholder.com/300x200",
+      details:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac enim ut lorem hendrerit vehicula. Vestibulum venenatis tellus vitae felis luctus, ut pulvinar massa tincidunt.",
+    },
+    {
+      name: "Property 2",
+      price: P1P,
+      Lot: "8883 sqft",
+      image: "https://via.placeholder.com/300x200",
+      details:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac enim ut lorem hendrerit vehicula. Vestibulum venenatis tellus vitae felis luctus, ut pulvinar massa tincidunt.",
+    },
+    {
+      name: "Property 3",
+      price: P1P,
+      Lot: "2000 sqft",
+      image: "https://via.placeholder.com/300x200",
+      details:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac enim ut lorem hendrerit vehicula. Vestibulum venenatis tellus vitae felis luctus, ut pulvinar massa tincidunt.",
+    },
+  ];
 
   return (
     <div
@@ -92,21 +111,44 @@ const Header = () => {
         }}
       >
         <div style={{ fontSize: "24px", fontWeight: "bold" }}>Real Estate</div>
-        <button
-          id="conbutt"
-          onClick={connect}
+        <div
           style={{
-            backgroundColor: "#007bff",
-            color: "#fff",
-            fontSize: "20px",
-            padding: "10px 20px",
-            borderRadius: "5px",
-            cursor: "pointer",
+            position: "fixed",
+            right: "20px",
           }}
         >
-          {walletAddress}
-        </button>
+          <button
+            id="conbutt"
+            onClick={connect}
+            style={{
+              backgroundColor: "#007bff",
+              color: "#fff",
+              fontSize: "20px",
+              padding: "10px 20px",
+              borderRadius: "5px",
+              cursor: "pointer",
+              position: "relative",
+              left: "5px",
+            }}
+          >
+            {walletAddress}
+          </button>
+          <button
+            onClick={price}
+            style={{
+              backgroundColor: "#007bff",
+              color: "#fff",
+              fontSize: "20px",
+              padding: "10px 20px",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            test
+          </button>
+        </div>
       </div>
+
       <div
         style={{
           display: "flex",
