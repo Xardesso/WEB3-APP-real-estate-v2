@@ -10,7 +10,7 @@ const Header = () => {
   const [bidAmount, setBidAmount] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [provider, setprovider] = useState("");
-  const [conadd] = useState("0xeb5B0fbbeE16244aFb362451B48C9D934cFfA09E");
+  const [conadd] = useState("0x814A978fB9e3A0bE0732DF5105eD35C463aff503");
 
   const handlePropertyClick = (property) => {
     setSelectedProperty(property);
@@ -29,31 +29,35 @@ const Header = () => {
       if (bidAmount === "") {
         window.alert("Enter bid amount");
       } else {
-        console.log(bidAmount);
-        console.log(provider);
-        const contractArtifacts = require("./artifacts/contracts/realesate.sol/BidContract.json");
-        const contractABI = contractArtifacts.abi;
-        console.log(contractABI);
-        const out = ethers.utils.parseUnits(bidAmount, "ether");
+        if (bidAmount > PR) {
+          console.log(bidAmount);
+          console.log(provider);
+          const contractArtifacts = require("./artifacts/contracts/realesate.sol/BidContract.json");
+          const contractABI = contractArtifacts.abi;
+          console.log(contractABI);
+          const out = ethers.utils.parseUnits(bidAmount, "ether");
 
-        console.log(out);
-        const values = {
-          gasLimit: 1000000,
-          value: out,
-        };
-        console.log(values);
-        const signer = provider.getSigner();
+          console.log(out);
+          const values = {
+            gasLimit: 1000000,
+            value: out,
+          };
+          console.log(values);
+          const signer = provider.getSigner();
 
-        const contract = new ethers.Contract(conadd, contractABI, signer);
+          const contract = new ethers.Contract(conadd, contractABI, signer);
 
-        const tx = await contract.bid(values);
+          const tx = await contract.bid(values);
 
-        const receipt = await tx.wait();
-        console.log(receipt.status);
-        if (receipt.status === 1) {
-          window.alert("Transaction successful!");
+          const receipt = await tx.wait();
+          console.log(receipt.status);
+          if (receipt.status === 1) {
+            window.alert("Transaction successful!");
+          } else {
+            window.alert("Transaction failed!");
+          }
         } else {
-          window.alert("Transaction failed!");
+          window.alert("Enter Higher bid");
         }
       }
     } else {
