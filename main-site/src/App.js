@@ -51,25 +51,31 @@ const Header = () => {
   async function bid() {
     console.log(bidAmount);
     console.log(provider);
-    const conadd = "0x6e5F7a75F89048B92d94aDb7aC250553eea50e2d";
+    const conadd = "0xeb5B0fbbeE16244aFb362451B48C9D934cFfA09E";
     const contractArtifacts = require("./artifacts/contracts/realesate.sol/BidContract.json");
     const contractABI = contractArtifacts.abi;
     console.log(contractABI);
+    const out = ethers.utils.parseUnits(bidAmount, "ether");
 
+    console.log(out);
     const values = {
       gasLimit: 1000000,
-      value: bidAmount,
+      value: out,
     };
     console.log(values);
-    const contract = new ethers.Contract(
-      conadd,
-      contractABI,
-      provider.getSigner()
-    );
-    const transaction = await contract.bid(values);
+    const signer = provider.getSigner();
 
-    console.log(contract);
-    await transaction.wait();
+    const contract = new ethers.Contract(conadd, contractABI, signer);
+
+    const tx = await contract.bid(values);
+
+    const receipt = await tx.wait();
+    console.log(receipt.status);
+    if (receipt.status === 1) {
+      window.alert("Transaction successful!");
+    } else {
+      window.alert("Transaction failed!");
+    }
   }
 
   return (

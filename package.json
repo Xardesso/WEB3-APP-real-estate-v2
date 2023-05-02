@@ -22,7 +22,8 @@
     "ejs": "^3.1.6",
     "express": "^4.18.2",
     "http": "^0.0.1-security",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "web3": "^1.9.0"
   },
   "description": "This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.",
   "version": "1.0.0",
