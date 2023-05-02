@@ -1,40 +1,16 @@
 import { useState } from "react";
 const { ethers } = require("ethers");
 
-const properties = [
-  {
-    name: "Property 1",
-    price: 50000,
-    Lot: "333 sqft",
-    image: "https://via.placeholder.com/300x200",
-    details:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac enim ut lorem hendrerit vehicula. Vestibulum venenatis tellus vitae felis luctus, ut pulvinar massa tincidunt.",
-  },
-  {
-    name: "Property 2",
-    price: 75000,
-    Lot: "8883 sqft",
-    image: "https://via.placeholder.com/300x200",
-    details:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac enim ut lorem hendrerit vehicula. Vestibulum venenatis tellus vitae felis luctus, ut pulvinar massa tincidunt.",
-  },
-  {
-    name: "Property 3",
-    price: 100000,
-    Lot: "2000 sqft",
-    image: "https://via.placeholder.com/300x200",
-    details:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac enim ut lorem hendrerit vehicula. Vestibulum venenatis tellus vitae felis luctus, ut pulvinar massa tincidunt.",
-  },
-];
-
 const Header = () => {
   const [walletAddress, setWalletAddress] = useState("connect wallet");
+
+  const [PR, PRU] = useState(1);
 
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [bidAmount, setBidAmount] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [provider, setprovider] = useState("");
+  const [conadd] = useState("0xeb5B0fbbeE16244aFb362451B48C9D934cFfA09E");
 
   const handlePropertyClick = (property) => {
     setSelectedProperty(property);
@@ -49,34 +25,68 @@ const Header = () => {
     window.alert("wallet connected");
   }
   async function bid() {
-    console.log(bidAmount);
-    console.log(provider);
-    const conadd = "0xeb5B0fbbeE16244aFb362451B48C9D934cFfA09E";
-    const contractArtifacts = require("./artifacts/contracts/realesate.sol/BidContract.json");
-    const contractABI = contractArtifacts.abi;
-    console.log(contractABI);
-    const out = ethers.utils.parseUnits(bidAmount, "ether");
+    if (provider !== "") {
+      if (bidAmount === "") {
+        window.alert("Enter amount");
+      } else {
+        console.log(bidAmount);
+        console.log(provider);
+        const contractArtifacts = require("./artifacts/contracts/realesate.sol/BidContract.json");
+        const contractABI = contractArtifacts.abi;
+        console.log(contractABI);
+        const out = ethers.utils.parseUnits(bidAmount, "ether");
 
-    console.log(out);
-    const values = {
-      gasLimit: 1000000,
-      value: out,
-    };
-    console.log(values);
-    const signer = provider.getSigner();
+        console.log(out);
+        const values = {
+          gasLimit: 1000000,
+          value: out,
+        };
+        console.log(values);
+        const signer = provider.getSigner();
 
-    const contract = new ethers.Contract(conadd, contractABI, signer);
+        const contract = new ethers.Contract(conadd, contractABI, signer);
 
-    const tx = await contract.bid(values);
+        const tx = await contract.bid(values);
 
-    const receipt = await tx.wait();
-    console.log(receipt.status);
-    if (receipt.status === 1) {
-      window.alert("Transaction successful!");
+        const receipt = await tx.wait();
+        console.log(receipt.status);
+        if (receipt.status === 1) {
+          window.alert("Transaction successful!");
+        } else {
+          window.alert("Transaction failed!");
+        }
+      }
     } else {
-      window.alert("Transaction failed!");
+      window.alert("Connect wallet");
     }
   }
+
+  async function price() {
+    if (provider !== "") {
+      console.log(provider);
+
+      const contractArtifacts = require("./artifacts/contracts/realesate.sol/BidContract.json");
+      const contractABI = contractArtifacts.abi;
+      const signer = provider.getSigner();
+      const contract2 = new ethers.Contract(conadd, contractABI, signer);
+      const tx = await contract2.hisghestbidcheck();
+      console.log(ethers.utils.formatEther(tx));
+
+      PRU(ethers.utils.formatEther(tx));
+    } else {
+      window.alert("Connect wallet");
+    }
+  }
+  const properties = [
+    {
+      name: "San jose 44 Lincoln Street",
+      price: PR,
+      Lot: "4239 sqft",
+      image:
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvcGVydHklMjBkZXZlbG9wZXJ8ZW58MHx8MHx8&w=1000&q=80",
+      details: "Price includes 3 pools 4 bedrooms and 5 bathrooms house.",
+    },
+  ];
 
   return (
     <div
@@ -92,21 +102,44 @@ const Header = () => {
         }}
       >
         <div style={{ fontSize: "24px", fontWeight: "bold" }}>Real Estate</div>
-        <button
-          id="conbutt"
-          onClick={connect}
+        <div
           style={{
-            backgroundColor: "#007bff",
-            color: "#fff",
-            fontSize: "20px",
-            padding: "10px 20px",
-            borderRadius: "5px",
-            cursor: "pointer",
+            position: "fixed",
+            right: "20px",
           }}
         >
-          {walletAddress}
-        </button>
+          <button
+            id="conbutt"
+            onClick={connect}
+            style={{
+              backgroundColor: "#007bff",
+              color: "#fff",
+              fontSize: "20px",
+              padding: "10px 20px",
+              borderRadius: "5px",
+              cursor: "pointer",
+              position: "relative",
+              left: "5px",
+            }}
+          >
+            {walletAddress}
+          </button>
+          <button
+            onClick={price}
+            style={{
+              backgroundColor: "#007bff",
+              color: "#fff",
+              fontSize: "20px",
+              padding: "10px 20px",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            Check Price
+          </button>
+        </div>
       </div>
+
       <div
         style={{
           display: "flex",
@@ -138,9 +171,10 @@ const Header = () => {
               style={{
                 padding: "20px",
                 display: "flex",
+
                 flexDirection: "column",
                 justifyContent: "space-between",
-                height: "20%",
+                height: "28%",
               }}
             >
               <div style={{ fontWeight: "bold", fontSize: "20px" }}>
@@ -148,7 +182,7 @@ const Header = () => {
               </div>
               <div style={{ fontSize: "20px" }}>{property.Lot}</div>
 
-              <div style={{ fontSize: "35px" }}>${property.price}</div>
+              <div style={{ fontSize: "25px" }}>ETH:{property.price}</div>
             </div>
           </div>
         ))}
@@ -197,8 +231,8 @@ const Header = () => {
               >
                 {selectedProperty.name}
               </div>
-              <div style={{ fontSize: "18px", marginBottom: "10px" }}>
-                ${selectedProperty.price}
+              <div style={{ fontSize: "18px", marginBottom: "5px" }}>
+                ETH:{selectedProperty.price}
               </div>
               <div style={{ fontSize: "18px", marginBottom: "10px" }}>
                 {selectedProperty.Lot}
