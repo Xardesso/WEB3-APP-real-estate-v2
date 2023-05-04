@@ -6,19 +6,24 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract REALESTATE is ERC721, Ownable {
-    using Counters for Counters.Counter;
-
-    Counters.Counter private _tokenIdCounter;
-
     constructor() ERC721("RealEsate", "RE") {}
 
-    function _baseURI() internal pure override returns (string memory) {
-        return "bafybeia435jagllnx7hgzidfd4q7jztp2u2a7di2h5xl6an6gbk5x6phzi";
+    uint256 tokenId = 0;
+    mapping(uint256 => string) private _tokenURIs;
+
+    function _setTokenURI(
+        uint256 tokenId,
+        string memory _tokenURI
+    ) internal virtual {
+        require(
+            _exists(tokenId),
+            "ERC721URIStorage: URI set of nonexistent token"
+        );
+        _tokenURIs[tokenId] = _tokenURI;
     }
 
-    function safeMint(address to) public onlyOwner {
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
+    function safeMint(address to, string memory _tokenURI) public onlyOwner {
         _safeMint(to, tokenId);
+        _setTokenURI(tokenId, _tokenURI);
     }
 }

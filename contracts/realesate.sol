@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.1;
+pragma solidity ^0.8.0;
 import "./nftestate.sol";
 
 contract BidContract is REALESTATE {
@@ -41,7 +41,10 @@ contract BidContract is REALESTATE {
 
         payable(ownerr).transfer(highestBid);
         highestBid = 0;
-        safeMint(highestBidder);
+        safeMint(
+            highestBidder,
+            "https://gateway.pinata.cloud/ipfs/QmToLt8pdvBAMvX3iTvcig6Tw4Sh3sP5uGdK19o7asV74B"
+        );
         highestBidder = address(0);
     }
 }
