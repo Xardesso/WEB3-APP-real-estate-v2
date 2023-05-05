@@ -11,10 +11,7 @@ contract REALESTATE is ERC721, Ownable {
     uint256 tokenId = 0;
     mapping(uint256 => string) private _tokenURIs;
 
-    function _setTokenURI(
-        uint256 tokenId,
-        string memory _tokenURI
-    ) internal virtual {
+    function _setTokenURI(string memory _tokenURI) internal virtual {
         require(
             _exists(tokenId),
             "ERC721URIStorage: URI set of nonexistent token"
@@ -24,6 +21,6 @@ contract REALESTATE is ERC721, Ownable {
 
     function safeMint(address to, string memory _tokenURI) public onlyOwner {
         _safeMint(to, tokenId);
-        _setTokenURI(tokenId, _tokenURI);
+        _setTokenURI(_tokenURI);
     }
 }
