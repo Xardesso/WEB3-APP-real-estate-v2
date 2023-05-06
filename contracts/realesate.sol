@@ -43,7 +43,7 @@ contract BidContract is REALESTATE {
         highestBid = 0;
         safeMint(
             highestBidder,
-            "https://gateway.pinata.cloud/ipfs/QmToLt8pdvBAMvX3iTvcig6Tw4Sh3sP5uGdK19o7asV74B"
+            "ipfs://bafybeia435jagllnx7hgzidfd4q7jztp2u2a7di2h5xl6an6gbk5x6phzi"
         );
         highestBidder = address(0);
     }
