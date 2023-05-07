@@ -1,8 +1,6 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-let owner;
-let bidder2;
 let bidContract;
 let realestate;
 
@@ -35,21 +33,36 @@ describe("BidContract", function () {
   });
 
   it("should transfer funds to the previous highest bidder when a new bid is placed", async function () {
-    const initialBid = 1000;
-    const newBid = 2000;
-    const [bidder1] = await ethers.getSigners();
-    const [bidder2] = await ethers.getSigners();
+    const [bidder1, bidder2] = await ethers.getSigners();
+    const bidAmount1 = ethers.utils.parseEther("0.00001");
+    const bidAmount2 = ethers.utils.parseEther("0.00002");
 
-    await bidContract.connect(bidder1).bid({
-      value: initialBid,
-    });
+    // Bidder1 places a bid
+    const tx1 = await bidContract.connect(bidder1).bid({ value: bidAmount1 });
+    const receipt1 = await tx1.wait();
+    const gasPrice = receipt1.gasPrice;
+    const gasUsed = receipt1.gasUsed;
+    const txFee = gasPrice.mul(gasUsed);
+    const balanceBeforeBid2 = await bidder1.getBalance();
 
-    const balanceBefore = await ethers.provider.getBalance(bidder1.address);
+    // Bidder2 places a higher bid, triggering a transfer to Bidder1
+    await bidContract.connect(bidder2).bid({ value: bidAmount2 });
+    const balanceAfterBid2 = await bidder1.getBalance();
 
-    await bidContract.connect(bidder2).bid({ value: newBid });
+    const expectedBalance = balanceBeforeBid2.add(bidAmount1).sub(txFee);
 
-    const balanceAfter = await ethers.provider.getBalance(bidder1.address);
-    expect(balanceAfter.sub(balanceBefore)).to.equal(initialBid);
+    expect(balanceAfterBid2).to.equal(
+      expectedBalance,
+      "Bidder1 should receive correct amount after bidder2 places a higher bid"
+    );
+    expect(await bidContract.highestBid()).to.equal(
+      bidAmount2,
+      "Highest bid amount should be updated"
+    );
+    expect(await bidContract.highestBidder()).to.equal(
+      bidder2.address,
+      "Highest bidder should be updated"
+    );
   });
 
   //("should only allow the owner to end the auction and mint the NFT to the highest bidder", async function () {

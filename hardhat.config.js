@@ -2,7 +2,7 @@ require("@nomicfoundation/hardhat-toolbox");
 require("@nomiclabs/hardhat-ethers");
 
 require("dotenv").config();
-const { PRIVATE_KEY, API_KEY } = process.env;
+const { PRIVATE_KEY, API_KEY, PRIVATE_KEY2 } = process.env;
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   defaultNetwork: "sepolia",
@@ -16,7 +16,7 @@ module.exports = {
   networks: {
     sepolia: {
       url: `https://eth-sepolia.g.alchemy.com/v2/${API_KEY}`,
-      accounts: [PRIVATE_KEY],
+      accounts: [PRIVATE_KEY, PRIVATE_KEY2],
     },
   },
 };
