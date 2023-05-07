@@ -42,7 +42,12 @@ describe("BidContract", function () {
     const receipt1 = await tx1.wait();
     const gasPrice = receipt1.gasPrice;
     const gasUsed = receipt1.gasUsed;
+    console.log("cena", gasPrice);
+    console.log("ilosc", gasUsed);
+
     const txFee = gasPrice.mul(gasUsed);
+    console.log("fee", txFee);
+
     const balanceBeforeBid2 = await bidder1.getBalance();
 
     // Bidder2 places a higher bid, triggering a transfer to Bidder1
