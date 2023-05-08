@@ -30,24 +30,20 @@ describe("BidContract", function () {
     // Verify that the highest bid has been updated
     const highestBid = await bidContract.hisghestbidcheck();
     expect(highestBid.toNumber()).to.equal(value);
+    await bidContract.endAuction();
   });
 
   it("should transfer funds to the previous highest bidder when a new bid is placed", async function () {
     const [bidder1, bidder2] = await ethers.getSigners();
-    const bidAmount1 = ethers.utils.parseEther("0.00001");
-    const bidAmount2 = ethers.utils.parseEther("0.00002");
+    const bidAmount1 = ethers.utils.parseEther("0.1");
+    const bidAmount2 = ethers.utils.parseEther("0.2");
 
     // Bidder1 places a bid
     const tx1 = await bidContract.connect(bidder1).bid({ value: bidAmount1 });
     const receipt1 = await tx1.wait();
-    const gasPrice = receipt1.gasPrice;
+    const gasPrice = tx1.gasPrice;
     const gasUsed = receipt1.gasUsed;
-    console.log("cena", gasPrice);
-    console.log("ilosc", gasUsed);
-
-    const txFee = gasPrice.mul(gasUsed);
-    console.log("fee", txFee);
-
+    const txFee = ethers.BigNumber.from(gasPrice).mul(gasUsed);
     const balanceBeforeBid2 = await bidder1.getBalance();
 
     // Bidder2 places a higher bid, triggering a transfer to Bidder1
@@ -68,6 +64,7 @@ describe("BidContract", function () {
       bidder2.address,
       "Highest bidder should be updated"
     );
+    await bidContract.endAuction();
   });
 
   //("should only allow the owner to end the auction and mint the NFT to the highest bidder", async function () {
