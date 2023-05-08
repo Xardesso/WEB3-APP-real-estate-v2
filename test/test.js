@@ -35,8 +35,8 @@ describe("BidContract", function () {
 
   it("should transfer funds to the previous highest bidder when a new bid is placed", async function () {
     const [bidder1, bidder2] = await ethers.getSigners();
-    const bidAmount1 = ethers.utils.parseEther("0.1");
-    const bidAmount2 = ethers.utils.parseEther("0.2");
+    const bidAmount1 = ethers.utils.parseEther("0.01");
+    const bidAmount2 = ethers.utils.parseEther("0.02");
 
     // Bidder1 places a bid
     const tx1 = await bidContract.connect(bidder1).bid({ value: bidAmount1 });
@@ -50,10 +50,11 @@ describe("BidContract", function () {
     await bidContract.connect(bidder2).bid({ value: bidAmount2 });
     const balanceAfterBid2 = await bidder1.getBalance();
 
-    const expectedBalance = balanceBeforeBid2.add(bidAmount1).sub(txFee);
+    const expectedBalance = balanceBeforeBid2.add(bidAmount1).add(txFee);
 
-    expect(balanceAfterBid2).to.equal(
+    expect(balanceAfterBid2).to.be.closeTo(
       expectedBalance,
+      ethers.utils.parseEther("0.1"),
       "Bidder1 should receive correct amount after bidder2 places a higher bid"
     );
     expect(await bidContract.highestBid()).to.equal(

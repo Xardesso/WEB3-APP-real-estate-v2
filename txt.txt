@@ -1,1 +1,5 @@
     await bidContract.endAuction();
+potetial error 
+Test case: The test case assumes that the previous highest bidder will receive the correct amount after a new bid is placed. However, the smart contract implementation transfers the entire previous highest bid amount to the previous highest bidder, not just the difference between the two bids. So the expected balance calculation in the test case is incorrect.
+2
+Przypadek testowy: Test zakłada, że poprzedni najwyższy licytujący otrzyma odpowiednią kwotę po złożeniu nowej oferty. Jednakże implementacja smart kontraktu przesyła całą kwotę poprzedniej najwyższej oferty do poprzedniego najwyższego licytującego, a nie tylko różnicę między dwiema ofertami. Dlatego obliczenie oczekiwanej wartości bilansu w przypadku testowym jest niepoprawne.
