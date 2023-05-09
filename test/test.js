@@ -20,9 +20,7 @@ describe("BidContract", function () {
     const [bidder1] = await ethers.getSigners();
     const value = 1000000;
 
-    const tx = await bidContract
-      .connect(bidder1)
-      .bid({ value: value, gasPrice: ethers.utils.parseUnits("10", "gwei") });
+    const tx = await bidContract.connect(bidder1).bid({ value: value });
 
     // Wait for the transaction to be mined
     await tx.wait();
@@ -35,8 +33,8 @@ describe("BidContract", function () {
 
   it("should transfer funds to the previous highest bidder when a new bid is placed", async function () {
     const [bidder1, bidder2] = await ethers.getSigners();
-    const bidAmount1 = ethers.utils.parseEther("0.01");
-    const bidAmount2 = ethers.utils.parseEther("0.03");
+    const bidAmount1 = ethers.utils.parseEther("0.001");
+    const bidAmount2 = ethers.utils.parseEther("0.003");
     const bigNumberValue = ethers.BigNumber.from(bidAmount1.toString());
     // Bidder1 places a bid
     const tx1 = await bidContract.connect(bidder1).bid({ value: bidAmount1 });
@@ -67,17 +65,16 @@ describe("BidContract", function () {
     await bidContract.endAuction();
   });
 
-  //("should only allow the owner to end the auction and mint the NFT to the highest bidder", async function () {
-  //const initialBid = ethers.utils.parseEther("1");
+  it("should only allow the owner to end the auction and mint the NFT to the highest bidder", async function () {
+    const [owner, bidder2] = await ethers.getSigners();
 
-  //await bidContract.connect(bidder1).bid({ value: initialBid });
-  //await bidContract.connect(owner).endAuction();
+    const initialBid = ethers.utils.parseEther("0.0001");
 
-  //const tokenOwner = await bidContract.ownerOf(0);
-  //expect(tokenOwner).to.equal(bidder1.address);
+    await bidContract.connect(bidder2).bid({ value: initialBid });
+    await bidContract.connect(owner).endAuction();
 
-  //await expect(bidContract.connect(bidder2).endAuction()).to.be.revertedWith(
-  //  "Only owner can end auction"
-  //);
-  //});
+    const tokenOwner = await bidContract.ownerOf(0);
+    console.log(tokenOwner);
+    expect(tokenOwner).to.equal(bidder2.address);
+  });
 });
