@@ -14,3 +14,6 @@ Przypadek testowy: Test zakłada, że poprzedni najwyższy licytujący otrzyma o
       ethers.utils.parseEther("0.1"),
       "Bidder1 should receive correct amount after bidder2 places a higher bid"
     );
+
+
+            tokenId + 1;
