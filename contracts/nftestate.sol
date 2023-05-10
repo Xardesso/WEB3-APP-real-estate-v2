@@ -6,24 +6,15 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract REALESTATE is ERC721, Ownable {
-    constructor() ERC721("RealEsate", "RE") {}
+    constructor() ERC721("REALESTATE", "RE") {}
 
-    uint256 tokenId = 0;
-    mapping(uint256 => string) private _tokenURIs;
-
-    function _setTokenURI(
-        uint256 tokenId,
-        string memory _tokenURI
-    ) internal virtual {
-        require(
-            _exists(tokenId),
-            "ERC721URIStorage: URI set of nonexistent token"
-        );
-        _tokenURIs[tokenId] = _tokenURI;
+    function _baseURI() internal pure override returns (string memory) {
+        return
+            "ipfs://bafybeia435jagllnx7hgzidfd4q7jztp2u2a7di2h5xl6an6gbk5x6phzi";
     }
 
-    function safeMint(address to, string memory _tokenURI) public onlyOwner {
+    function safeMint(address to) public onlyOwner {
+        uint256 tokenId = 1;
         _safeMint(to, tokenId);
-        _setTokenURI(tokenId, _tokenURI);
     }
 }

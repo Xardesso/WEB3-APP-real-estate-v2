@@ -41,10 +41,7 @@ contract BidContract is REALESTATE {
 
         payable(ownerr).transfer(highestBid);
         highestBid = 0;
-        safeMint(
-            highestBidder,
-            "https://gateway.pinata.cloud/ipfs/QmToLt8pdvBAMvX3iTvcig6Tw4Sh3sP5uGdK19o7asV74B"
-        );
+        safeMint(highestBidder);
         highestBidder = address(0);
     }
 }
