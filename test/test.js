@@ -70,11 +70,11 @@ describe("BidContract", function () {
 
     const initialBid = ethers.utils.parseEther("0.0001");
 
-    await bidContract.connect(bidder2).bid({ value: initialBid });
-    await bidContract.connect(owner).endAuction();
-
-    const tokenOwner = await bidContract.ownerOf(0);
-    console.log(tokenOwner);
+    const bid1 = await bidContract.connect(bidder2).bid({ value: initialBid });
+    await bid1.wait();
+    const bid2 = await bidContract.endAuction();
+    await bid2.wait();
+    const tokenOwner = await bidContract.ownerOf(1);
     expect(tokenOwner).to.equal(bidder2.address);
   });
 });

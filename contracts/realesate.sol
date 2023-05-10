@@ -41,10 +41,7 @@ contract BidContract is REALESTATE {
 
         payable(ownerr).transfer(highestBid);
         highestBid = 0;
-        safeMint(
-            highestBidder,
-            "ipfs://bafybeia435jagllnx7hgzidfd4q7jztp2u2a7di2h5xl6an6gbk5x6phzi"
-        );
+        safeMint(highestBidder);
         highestBidder = address(0);
     }
 }
