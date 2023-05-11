@@ -74,7 +74,7 @@ describe("BidContract", function () {
     await bid1.wait();
     const bid2 = await bidContract.endAuction();
     await bid2.wait();
-    const tokenOwner = await bidContract.ownerOf(1);
+    const tokenOwner = await bidContract.ownerOf(0);
     expect(tokenOwner).to.equal(bidder2.address);
   });
 });
