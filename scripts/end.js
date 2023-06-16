@@ -1,5 +1,5 @@
 async function main() {
-  const conadd = "0x57c50eA3A17079Ed8C1069C7E487cCcc93A51d9F";
+  const conadd = "0xDde9bFf1C8EFAE8Cba5BB4e61eaD878f79A3Ce47";
 
   const Token = await ethers.getContractFactory("BidContract");
   const final = await Token.attach(conadd);
